@@ -1,7 +1,6 @@
 package mx.finerio.demo.presenters;
 
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import mx.finerio.demo.core.NetworkInterface;
@@ -19,7 +18,7 @@ public class MePresenter {
 
     public Observable<Me> getMe() {
         if (mMe != null) {
-            return Observable.just(mMe);
+            return Observable.just(mMe).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         }
         return apiInterface.getMe().map(me -> {
             mMe = me;

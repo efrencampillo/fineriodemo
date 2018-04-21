@@ -2,10 +2,13 @@ package mx.finerio.demo.core;
 
 import android.app.Application;
 
+import mx.finerio.demo.models.LoginResponseModel;
+
 public class FinerioApp extends Application {
 
     private static FinerioApp mThis = null;
-    private static String token;
+    private String token;
+    private String tokenType;
 
     private AppComponent appComponent;
 
@@ -13,8 +16,7 @@ public class FinerioApp extends Application {
     public void onCreate() {
         super.onCreate();
         mThis = this;
-        appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
-        //appComponent = DaggerAppC
+        appComponent = DaggerAppComponent.builder().appModule(new AppModule()).build();
     }
 
 
@@ -22,7 +24,11 @@ public class FinerioApp extends Application {
         return mThis;
     }
 
-    //this method should be part of a session manager but it is not completed on this MVP;
+    public AppComponent getAppComponent() {
+        return appComponent;
+    }
+
+    //those method should be part of a session manager but it is not completed on this MVP;
     public boolean isTheUserLoged() {
         return token != null;
     }
@@ -31,7 +37,18 @@ public class FinerioApp extends Application {
         return token;
     }
 
-    public AppComponent getAppComponent() {
-        return appComponent;
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public void setToken(LoginResponseModel newToken) {
+        token = newToken.access_token;
+        tokenType = newToken.token_type;
+    }
+
+
+    public void logout() {
+        token = null;
+        tokenType = null;
     }
 }

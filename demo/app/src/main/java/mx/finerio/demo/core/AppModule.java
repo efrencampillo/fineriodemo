@@ -1,8 +1,6 @@
 package mx.finerio.demo.core;
 
-import android.content.Context;
-
-import java.io.IOException;
+import java.util.logging.Level;
 
 import javax.inject.Singleton;
 
@@ -10,42 +8,42 @@ import dagger.Module;
 import dagger.Provides;
 import mx.finerio.demo.presenters.MePresenter;
 import mx.finerio.demo.presenters.MovementsPresenter;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 @Module
 public class AppModule {
 
-    Context mContext;
-
-    public AppModule(Context context) {
-        mContext = context;
-    }
 
     @Provides
     @Singleton
     Retrofit provideRetrofit() {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        client.addInterceptor(logging);
+
         client.interceptors().add(chain -> {
             Request request = chain.request();
             if (FinerioApp.getInstance().isTheUserLoged()) {
                 request = request.newBuilder()
-                        .addHeader("authorization", "Bearer " + FinerioApp.getInstance().getToken())
+                        .addHeader("authorization",
+                                FinerioApp.getInstance().getTokenType() + " " + FinerioApp.getInstance().getToken())
                         .build();
             }
-            Response response = chain.proceed(request);
 
-            return response;
+            return chain.proceed(request);
         });
 
         return new Retrofit.Builder()
                 .addConverterFactory(JacksonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 //this can be unharcoded by configurations
-                .baseUrl("https://apip.finerio.mx")
+                .baseUrl("https://api.finerio.mx")
                 .client(client.build())
                 .build();
     }

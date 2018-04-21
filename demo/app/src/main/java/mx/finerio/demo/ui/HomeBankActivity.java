@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -33,13 +34,21 @@ public class HomeBankActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_bank);
         disposables = new CompositeDisposable();
         FinerioApp.getInstance().getAppComponent().inject(this);
-        //TODO gegt ME
+        disposables.add(mePresenter.getMe()
+                .subscribe(me -> {
+
+                }, error ->
+                        Toast.makeText(HomeBankActivity.this, R.string.error_user_info, Toast.LENGTH_SHORT).show()));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //TODO get movements
+        disposables.add(movePresenter.getMoveMents()
+                .subscribe(movements -> {
+
+                }, error ->
+                        Toast.makeText(HomeBankActivity.this, R.string.error_movements, Toast.LENGTH_SHORT).show()));
     }
 
     @Override
