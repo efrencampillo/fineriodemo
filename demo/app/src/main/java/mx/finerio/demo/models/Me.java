@@ -1,15 +1,15 @@
 package mx.finerio.demo.models;
 
 public class Me {
-    String id;
-    boolean accountExpired;
-    boolean accountLocked;
-    String birthdate;
-    int customerId;
-    String dateCreated;
-    String email;
-    boolean enabled;
-    String gender;
-    String lastName;
-    String name;
+    public String id;
+    public boolean accountExpired;
+    public boolean accountLocked;
+    public String birthdate;
+    public int customerId;
+    public String dateCreated;
+    public String email;
+    public boolean enabled;
+    public String gender;
+    public String lastName;
+    public String name;
 }

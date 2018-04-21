@@ -7,10 +7,14 @@ public class FinerioApp extends Application {
     private static FinerioApp mThis = null;
     private static String token;
 
+    private AppComponent appComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
         mThis = this;
+        appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+        //appComponent = DaggerAppC
     }
 
 
@@ -25,5 +29,9 @@ public class FinerioApp extends Application {
 
     public String getToken() {
         return token;
+    }
+
+    public AppComponent getAppComponent() {
+        return appComponent;
     }
 }
