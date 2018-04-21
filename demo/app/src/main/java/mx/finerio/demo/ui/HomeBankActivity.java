@@ -1,4 +1,4 @@
-package mx.finerio.demo;
+package mx.finerio.demo.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import mx.finerio.demo.R;
 
 public class HomeBankActivity extends AppCompatActivity {
 
