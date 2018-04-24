@@ -19,14 +19,12 @@ public class MovementsPresenter {
         apiInterface = networkInterface;
     }
 
-    public Observable<List<Movement>> getMoveMents() {
-        String token = FinerioApp.getInstance().getToken();
-        String start = (new Date()).toString();
+    public Observable<List<Movement>> getMovements(int start, int max) {
+        String token = FinerioApp.getInstance().getUserId();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -1);
-        String end = calendar.getTime().toString();
-        String timeZone = calendar.getTimeZone().toString();
-        return apiInterface.getMovements(token, start, end,timeZone).map(info -> info.data)
+        /// el API no esta preparado para decir cuantos hay en total
+        return apiInterface.getMovements(token, start, max).map(info -> info.data)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 }

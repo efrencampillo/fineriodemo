@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Finerio demo</string>
     <string name="action_settings">Settings</string>
+    <string name="action_logout">Logout</string>
     <string name="error_login">Error de inicio de session, intente mas tarde o verifique sus credenciales</string>
     <string name="error_user_info">Error al traer tu informacion</string>
     <string name="error_movements">Error al traer tus movimientos</string>

@@ -30,9 +30,15 @@ public class AppModule {
         client.interceptors().add(chain -> {
             Request request = chain.request();
             if (FinerioApp.getInstance().isTheUserLoged()) {
+                String auth = FinerioApp.getInstance().getTokenType() + " " + FinerioApp.getInstance().getToken();
                 request = request.newBuilder()
-                        .addHeader("authorization",
-                                FinerioApp.getInstance().getTokenType() + " " + FinerioApp.getInstance().getToken())
+                        // as i have not the mobile user Agent
+                        .addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36")
+                        .addHeader("Content-Type", "application/json;charset=UTF-8")
+                        .addHeader("Accept","application/json;charset=UTF-8")
+                        .addHeader("Authorization", auth)
+                        .addHeader("Accept-Encoding", "gzip, deflate, br ")
+                        .addHeader("Accept-Language", "es-ES,es;q=0.9")
                         .build();
             }
 
@@ -42,7 +48,7 @@ public class AppModule {
         return new Retrofit.Builder()
                 .addConverterFactory(JacksonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                //this can be unharcoded by configurations
+                //this can be un-harcoded by configurations
                 .baseUrl("https://api.finerio.mx")
                 .client(client.build())
                 .build();

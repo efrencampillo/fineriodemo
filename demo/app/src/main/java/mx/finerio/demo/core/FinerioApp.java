@@ -7,6 +7,7 @@ import mx.finerio.demo.models.LoginResponseModel;
 public class FinerioApp extends Application {
 
     private static FinerioApp mThis = null;
+    private String userId;
     private String token;
     private String tokenType;
 
@@ -46,9 +47,18 @@ public class FinerioApp extends Application {
         tokenType = newToken.token_type;
     }
 
+    public void setUserId(String newId) {
+        userId = newId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
 
     public void logout() {
         token = null;
         tokenType = null;
+        userId = null;
     }
 }

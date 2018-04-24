@@ -36,13 +36,19 @@ public class LoginActivity extends AppCompatActivity {
         setListeners();
     }
 
+    private void setLoginButtonEnabled(boolean enabled) {
+        Button login = findViewById(R.id.login);
+        login.setEnabled(enabled);
+    }
+
     private void setListeners() {
         final EditText username = findViewById(R.id.username);
         final EditText password = findViewById(R.id.password);
+
         Button login = findViewById(R.id.login);
 
         login.setOnClickListener(v -> {
-            //todo block ui and showw loader
+            setLoginButtonEnabled(false);
             LoginModel model = new LoginModel();
             model.username = username.getText().toString();
             model.password = password.getText().toString();
@@ -52,16 +58,19 @@ public class LoginActivity extends AppCompatActivity {
                             loginResponseModel -> {
                                 FinerioApp.getInstance().setToken(loginResponseModel);
                                 passLogin();
-                            }, error ->
-                                    Toast.makeText(LoginActivity.this, R.string.error_login, Toast.LENGTH_SHORT).show()
+                            }, error -> {
+                                setLoginButtonEnabled(true);
+                                Toast.makeText(LoginActivity.this, R.string.error_login, Toast.LENGTH_SHORT).show();
+                            }
                     ));
         });
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         if (disposables != null) disposables.clear();
+        setLoginButtonEnabled(true);
     }
 
     private void passLogin() {

@@ -9,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface NetworkInterface {
 
@@ -18,10 +19,14 @@ public interface NetworkInterface {
     @GET("/api/me")
     Observable<Me> getMe();
 
-    @GET("/api/users/{token}/movements?deep=true&includeCharges=true&includeDeposits=true"+
-            "&startDate={start}&endDate={end}&tmz={timezone}")
-    Observable<MovementResponseModel> getMovements(@Path("token")String token,
-                                                   @Path("start") String start,
-                                                   @Path("end") String end,
-                                                   @Path("timezone") String timezone);
+    @GET("/api/users/{userid}/movements?includeCharges=true&includeDeposits=true")
+    Observable<MovementResponseModel> getMovements(@Path("userid")String user,
+                                                   @Query("start") String start,
+                                                   @Query("end") String end,
+                                                   @Query("timezone") String timezone);
+
+    @GET("/api/users/{userid}/movements?includeCharges=true&includeDeposits=true")
+    Observable<MovementResponseModel> getMovements(@Path("userid")String user,
+                                                   @Query("offset") int start,
+                                                   @Query("max") int block);
 }
